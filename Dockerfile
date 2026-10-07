@@ -1,6 +1,18 @@
-FROM debian:12
+services:
 
-# Instalar Apache, PHP, extensiones de BD y herramientas necesarias
+  apache:
+    build: .
+    container_name: server-apache2-2
+    restart: always
+    volumes:
+      - ./Prestamos:/var/www/html
+    ports:
+      - "8089:80"
+
+
+
+
+   # Instalar Apache, PHP, extensiones de BD y herramientas necesarias
 RUN apt update && apt install -y \
     apache2 \
     php \
@@ -36,3 +48,17 @@ WORKDIR /var/www/html
 EXPOSE 80
 
 CMD ["apache2ctl", "-D", "FOREGROUND"]
+
+
+docker compose build
+docker compose up -d
+docker exec -it server-apache2-2 bash
+cd /var/www/html
+composer init
+composer dump-autoload
+
+
+
+
+git config --global user.name "arthur_hs"
+git config --global user.email "hg24001@ues.edu.sv"
